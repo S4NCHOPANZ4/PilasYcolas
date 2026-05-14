@@ -1,0 +1,7 @@
+co\ciencias\pliasycolas\model\Queue.class
+co\ciencias\pliasycolas\model\Node.class
+co\ciencias\pliasycolas\model\Task.class
+co\ciencias\pliasycolas\controller\Controller.class
+co\ciencias\pliasycolas\controller\AplMain.class
+co\ciencias\pliasycolas\view\VistaConsola.class
+co\ciencias\pliasycolas\model\Stack.class
