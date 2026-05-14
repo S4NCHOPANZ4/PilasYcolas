@@ -7,7 +7,7 @@ public class Stack {
         top = null;
     }
     
-    public void push(char value){
+    public void push(Character value){
         Node<Character> newNode = new Node();
         newNode.setValue(value);
         newNode.setNext(top);

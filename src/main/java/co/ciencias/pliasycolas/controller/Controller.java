@@ -1,55 +1,52 @@
 package co.ciencias.pliasycolas.controller;
+ 
 import co.ciencias.pliasycolas.model.Node;
 import co.ciencias.pliasycolas.model.Queue;
 import co.ciencias.pliasycolas.model.Stack;
-import co.ciencias.pliasycolas.view.VistaConsola;
-
+import co.ciencias.pliasycolas.view.VistaGUI;
+ 
 public class Controller {
-    VistaConsola vc = new VistaConsola();
-    public Boolean symbolicEq(String data){
-        Stack pila = new Stack();
-        String opening = "[(";
-        String closing = "])";
-        for(int i = 0; i < data.length(); i++){
-            char c = data.charAt(i);
-            if(opening.indexOf(c) != -1) pila.push(c);
-            else if(closing.indexOf(c) != -1){
-                if(pila.isEmpty()) return false;
-                char top = pila.peek().getValue();
-                if(top == '[' && c == ']' || top == '(' && c == ')') pila.pop();
+ 
+    private final Stack    stack = new Stack();
+    private final Queue    queue = new Queue();
+    private final VistaGUI vc    = new VistaGUI(stack, queue, this);
+ 
+    public Controller() { run(); }
+ 
+    public boolean symbolicEq(String s) {
+        Stack st = new Stack();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if ("([".indexOf(c) != -1) {
+                st.push(c);
+            } else if (")]".indexOf(c) != -1) {
+                if (st.isEmpty()) return false;
+                char top = st.peek().getValue();
+                if ((top == '(' && c == ')') || (top == '[' && c == ']')) st.pop();
                 else return false;
             }
         }
-        return pila.isEmpty();
-            // [()]  ->   [  -> pila: [ -> ( pila: [ ( ->  ) -> pila: [ -> ] -> pila: null -> pila vacia EXITO!
-                       // ^ cima         ^ cima           ^ cima   
+        return st.isEmpty();
     }
-
-    public void avgCompTime(Queue tasks){
-        int acum = 0;
-        int totalComp = 0;
-        int n = 0;
-        while(!tasks.isEmpty()){
-            Node<Integer> task = tasks.deQueue();
-            acum += task.getValue();
-            n++;
-            vc.mostrarInformacion(task.getName() + " termina en: " + acum);
+ 
+    public void avgCompTime(Queue q) {
+        int sum = 0, count = 0;
+        while (!q.isEmpty()) {
+            Node<Integer> n = q.deQueue();
+            sum += n.getValue();
+            count++;
+            vc.mostrarInformacion(n.getName() + " acum=" + sum);
         }
-        double avg = (double) acum / n;
-        
-        vc.mostrarInformacion("Tiempo en para completar: " + avg);
-    } 
-    
-    public void run(){ 
-        vc.mostrarInformacion(symbolicEq("[()]")); 
-        
-        Queue tasks  = new Queue();
-        tasks.prioInQueue(90, "A");
-        tasks.prioInQueue(20, "B");
-        tasks.prioInQueue(81, "C");
-        tasks.prioInQueue(50, "D");
-        
-        avgCompTime(tasks);
+        if (count > 0)
+            vc.mostrarInformacion("Tiempo medio: " + (double) sum / count);
+    }
+ 
+    private void run() {
+        Queue q = new Queue();
+        q.prioInQueue(90, "A");
+        q.prioInQueue(20, "B");
+        q.prioInQueue(81, "C");
+        q.prioInQueue(50, "D");
+        avgCompTime(q);
     }
 }
-
