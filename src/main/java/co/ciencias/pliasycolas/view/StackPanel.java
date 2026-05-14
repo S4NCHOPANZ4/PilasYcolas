@@ -10,11 +10,11 @@ import javax.swing.*;
  
 public class StackPanel extends JPanel {
  
-    private final Stack      stack;
-    private final Controller ctrl;
-    private final StackCanvas canvas;
-    private final JTextField  symInput;
-    private final JLabel      symResult;
+    private  Stack      stack;
+    private  Controller ctrl;
+    private  StackCanvas canvas;
+    private  JTextField  symInput;
+    private  JLabel      symResult;
  
     public StackPanel(Stack stack, Controller ctrl) {
         this.stack = stack;

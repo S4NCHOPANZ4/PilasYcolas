@@ -12,11 +12,11 @@ import javax.swing.*;
  
 public class QueuePanel extends JPanel {
  
-    private final Queue      queue;
-    private final Controller ctrl;
-    private final QueueCanvas canvas;
-    private final JTextField  taskName;
-    private final JTextField  taskTime;
+    private  Queue      queue;
+    private  Controller ctrl;
+    private  QueueCanvas canvas;
+    private  JTextField  taskName;
+    private  JTextField  taskTime;
  
     private Consumer<String> logFn;
     public void setLogFn(Consumer<String> fn) { this.logFn = fn; }
