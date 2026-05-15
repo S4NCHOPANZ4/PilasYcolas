@@ -133,16 +133,27 @@ public class QueuePanel extends JPanel {
             g.drawString("BACK",    lx + bW - 24, y - 3);
             g.drawString("n=" + elems.size(), 4, H - 4);
         }
+        
  
-        private List<Node<Integer>> queueSnapshot() {
-            List<Node<Integer>> result = new ArrayList<>();
-            List<int[]>  bkv = new ArrayList<>();
-            List<String> bkn = new ArrayList<>();
-            while (!queue.isEmpty()) {
-                Node<Integer> n = queue.deQueue();
-                result.add(n); bkv.add(new int[]{n.getValue()}); bkn.add(n.getName());
-            }
-            for (int i = 0; i < bkv.size(); i++) queue.inQueue(bkv.get(i)[0], bkn.get(i));
+        
+            private List<Node<Integer>> queueSnapshot() {
+                
+                    List<Node<Integer>> result = new ArrayList<>();
+                    Queue auxQueue = new Queue(); // Cola temporal para no perder datos
+
+                    // 1. Pasamos de la original a la lista y a la auxiliar
+                    while (!queue.isEmpty()) {
+                        Node<Integer> n = queue.deQueue();
+                        result.add(n);
+                        auxQueue.prioInQueue(n.getValue(), n.getName()); 
+                    }
+
+                    // 2. Restauramos la original exactamente como estaba
+                    while (!auxQueue.isEmpty()) {
+                        Node<Integer> n = auxQueue.deQueue();
+                        queue.prioInQueue(n.getValue(), n.getName());
+                    }
+
             return result;
         }
     }
