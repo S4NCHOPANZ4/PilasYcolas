@@ -10,6 +10,10 @@ import java.util.List;
 import java.util.function.Consumer;
 import javax.swing.*;
  
+/**
+ * Panel de la interfaz gráfica diseñado para la gestión visual de una Cola con Prioridad.
+ *
+ */
 public class QueuePanel extends JPanel {
  
     private  Queue      queue;
@@ -19,9 +23,27 @@ public class QueuePanel extends JPanel {
     private  JTextField  taskTime;
  
     private Consumer<String> logFn;
+    
+    /**
+     * Establece la función de registro para la salida de mensajes.
+     * @param fn  recibirá los mensajes de log.
+     */
     public void setLogFn(Consumer<String> fn) { this.logFn = fn; }
+    
+    /**
+     * Envía un mensaje al log si la función ha sido definida.
+     * @param msg Mensaje a registrar.
+     */
     private void log(String msg) { if (logFn != null) logFn.accept(msg); }
- 
+    
+    /**
+     * Constructor de QueuePanel.
+     * Configura la disposición de los componentes, inicializa el canvas y define
+     * los eventos de los botones para encolar, desencolar y procesar.
+     * 
+     * @param queue Instancia de {@link Queue} .
+     * @param ctrl  Instancia de {@link Controller} para procesos 
+     */
     public QueuePanel(Queue queue, Controller ctrl) {
         this.queue = queue;
         this.ctrl  = ctrl;
@@ -82,10 +104,19 @@ public class QueuePanel extends JPanel {
         add(canvas, BorderLayout.CENTER);
         add(south,  BorderLayout.SOUTH);
     }
- 
+    
+    /**
+     * Refresca la representación visual de la cola en el lienzo.
+     */
     public void repaintCanvas() { canvas.repaint(); }
  
     // ── QueueCanvas ──────────────────────────────────────────────────────────
+    
+    /**
+     * Clase interna para el renderizado gráfico de la cola.
+     * Implementa {@code MouseMotionListener} y {@code MouseListener} para 
+     * permitir la interacción directa con los nodos dibujados.
+     */
     private class QueueCanvas extends JPanel {
         
         private int hoverIndex = -1;   //  elemento sobre el que está el mouse
@@ -94,6 +125,7 @@ public class QueuePanel extends JPanel {
             // Detectar movimiento
             addMouseMotionListener(new java.awt.event.MouseAdapter() {
                 @Override
+                
                 public void mouseMoved(java.awt.event.MouseEvent e) {
                     checkHover(e.getPoint());
                 }
@@ -117,7 +149,11 @@ public class QueuePanel extends JPanel {
                 }
             });
         }
-
+        
+        /**
+         * Determina si el mouse está sobre algún nodo de la cola.
+         * @param p Punto de ubicación del mouse.
+         */
         private void checkHover(Point p) {
             List<Node<Integer>> elems = queueSnapshot();
             int bW = 64, bH = 40, gap = 6;
@@ -139,7 +175,13 @@ public class QueuePanel extends JPanel {
                 repaint();
             }
         }
-
+        
+        /**
+         * Elimina un nodo específico de la cola basándose en su posición visual.
+         * Reconstruye la cola omitiendo el elemento seleccionado.
+         * 
+         * @param index Posición del nodo a eliminar.
+         */
         private void eliminarNodoPorIndice(int index) {
             List<Node<Integer>> tempElems = queueSnapshot();
             if (index >= 0 && index < tempElems.size()) {
@@ -157,6 +199,12 @@ public class QueuePanel extends JPanel {
         }
 
         @Override
+        /**
+         * Renderiza los componentes de la cola, incluyendo nodos, flechas 
+         * y etiquetas de FRONT/BACK.
+         * 
+         * @param g Contexto gráfico.
+         */
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             List<Node<Integer>> elems = queueSnapshot();
@@ -215,7 +263,11 @@ public class QueuePanel extends JPanel {
         }
         
  
-        
+          /**
+         * Crea una captura (snapshot) del estado actual de la cola sin destruirla.
+         * 
+         * @return Una lista de nodos con los datos actuales de la cola.
+         */
             private List<Node<Integer>> queueSnapshot() {
                 
                     List<Node<Integer>> result = new ArrayList<>();

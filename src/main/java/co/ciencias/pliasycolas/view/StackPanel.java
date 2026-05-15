@@ -8,14 +8,25 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
  
+/**
+ * Panel de la interfaz gráfica de la gestión y visualización de la Pila.
+ * 
+ */
 public class StackPanel extends JPanel {
  
-    private  Stack      stack;
+    private  Stack      stack;      
     private  Controller ctrl;
     private  StackCanvas canvas;
     private  JTextField  symInput;
     private  JLabel      symResult;
- 
+    
+    /**
+     * Constructor de StackPanel.
+     * Configura el layout, los bordes, el lienzo de dibujo y los controles de usuario.
+     * 
+     * @param stack La instancia de {@link Stack} a representar.
+     * @param ctrl  El {@link Controller} que procesará las expresiones.
+     */
     public StackPanel(Stack stack, Controller ctrl) {
         this.stack = stack;
         this.ctrl  = ctrl;
@@ -49,16 +60,34 @@ public class StackPanel extends JPanel {
         add(canvas,   BorderLayout.CENTER);
         add(controls, BorderLayout.SOUTH);
     }
- 
+    
+    /**
+     * Solicita la actualización visual del lienzo de dibujo de la pila.
+     */
     public void repaintCanvas() { canvas.repaint(); }
  
     // ── StackCanvas ──────────────────────────────────────────────────────────
+    
+    /**
+     * Clase interna privada que actúa como lienzo (Canvas) para dibujar la pila.
+     * Representa visualmente cada elemento como un bloque apilado desde la base.
+     */
     private class StackCanvas extends JPanel {
  
         private String highlightExpr = "";
- 
+        
+        /**
+         * Establece la expresión que debe ser procesada y dibujada.
+         * @param expr Cadena de texto con símbolos.
+         */
         public void setHighlightExpr(String expr) { this.highlightExpr = expr; }
- 
+        
+        /**
+         * Realiza el dibujo de los componentes de la pila en el panel.
+         * Dibuja la base de la pila, los bloques de caracteres y el puntero "TOP".
+         * 
+         * @param g El contexto gráfico para realizar el dibujo.
+         */
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
@@ -109,7 +138,15 @@ public class StackPanel extends JPanel {
             g.setColor(Color.GRAY);
             g.drawString("n=" + sim.size(), x, 34);
         }
- 
+        
+        /**
+         * Simula el comportamiento de una pila basándose en una cadena de caracteres.
+         * Recorre la expresión agregando símbolos de apertura y eliminándolos si 
+         * encuentran su pareja de cierre.
+         * 
+         * @param expr Expresión a simular.
+         * @return Una lista de caracteres que representa el estado final de la pila.
+         */
         private List<Character> simulateStack(String expr) {
             List<Character> result = new ArrayList<>();
             for (int i = 0; i < expr.length(); i++) {
