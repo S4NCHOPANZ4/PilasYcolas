@@ -25,8 +25,7 @@ public class Queue {
     
     
     //Busca poner siempre los nodos en orden 1 <- 2 <- 3 <- 4 <- 5  (basandonosen la formula de tiempo promedio de finalizacion)
-                                          // ^              ^
-                                          //front           back
+    
     public void prioInQueue(int value, String name){
         Node<Integer> newNode = new Node();
         newNode.setName(name);

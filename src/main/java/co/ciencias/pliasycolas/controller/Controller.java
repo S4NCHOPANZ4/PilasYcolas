@@ -31,22 +31,32 @@ public class Controller {
  
     public void avgCompTime(Queue q) {
         int sum = 0, count = 0;
+        
+        Queue auxQueue = new Queue(); // se crea una cola temporal
+        
         while (!q.isEmpty()) {
             Node<Integer> n = q.deQueue();
             sum += n.getValue();
             count++;
-            vc.mostrarInformacion(n.getName() + " acum=" + sum);
+            
+            auxQueue.inQueue(n.getValue(),n.getName());  //Guarda la tarea en la cola temporal para no perder la cola
+            
+             vc.mostrarInformacion(n.getName() + " Tiempo Acumulado =" + sum);
         }
+        
+        while (!auxQueue.isEmpty()) {   //hasta que la auxiliar no este vacia, se devuelven las tareas a la original
+            Node<Integer> aux = auxQueue.deQueue();  //se crea una tarea temporal
+            q.inQueue(aux.getValue(),aux.getName());    // se va llenando la cola original nuevamente
+        }
+        
+        vc.mostrarInformacion(" Total Tareas =" + count);
         if (count > 0)
+            
             vc.mostrarInformacion("Tiempo medio: " + (double) sum / count);
     }
  
     private void run() {
         Queue q = new Queue();
-        q.prioInQueue(90, "A");
-        q.prioInQueue(20, "B");
-        q.prioInQueue(81, "C");
-        q.prioInQueue(50, "D");
         avgCompTime(q);
     }
 }
