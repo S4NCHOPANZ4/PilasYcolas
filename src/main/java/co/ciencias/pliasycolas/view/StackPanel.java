@@ -114,11 +114,11 @@ public class StackPanel extends JPanel {
             List<Character> result = new ArrayList<>();
             for (int i = 0; i < expr.length(); i++) {
                 char c = expr.charAt(i);
-                if ("([".indexOf(c) != -1) {
+                if ("([{".indexOf(c) != -1) {
                     result.add(c);
-                } else if (")]".indexOf(c) != -1 && !result.isEmpty()) {
+                } else if (")]}".indexOf(c) != -1 && !result.isEmpty()) {
                     char top = result.get(result.size() - 1);
-                    if ((top == '(' && c == ')') || (top == '[' && c == ']'))
+                    if ((top == '(' && c == ')') || (top == '[' && c == ']') || (top == '{' && c == '}'))
                         result.remove(result.size() - 1);
                 }
             }

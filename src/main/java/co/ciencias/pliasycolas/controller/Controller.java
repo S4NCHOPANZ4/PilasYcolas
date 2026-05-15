@@ -17,12 +17,12 @@ public class Controller {
         Stack st = new Stack();
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            if ("([".indexOf(c) != -1) {
+            if ("([{".indexOf(c) != -1) {
                 st.push(c);
-            } else if (")]".indexOf(c) != -1) {
+            } else if (")]}".indexOf(c) != -1) {
                 if (st.isEmpty()) return false;
                 char top = st.peek().getValue();
-                if ((top == '(' && c == ')') || (top == '[' && c == ']')) st.pop();
+                if ((top == '(' && c == ')') || (top == '[' && c == ']') || (top == '{' && c == '}')) st.pop();
                 else return false;
             }
         }
